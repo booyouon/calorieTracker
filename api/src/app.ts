@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app: Application = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 app.use(express.json());
 
@@ -38,11 +38,8 @@ app.get("/foods", async (req, res) => {
 
 // Route to add a new food to the "foods" table
 app.post("/foods", async (req: Request, res: Response) => {
-  console.log(req.body);
   // Check for required fields
   const requiredFields = process.env.FOOD_REQUIRED_FIELDS?.split(" ") || [];
-  console.log(requiredFields);
-
   const missingFields = requiredFields.filter(
     (field: string) => !req.body[field]
   );
@@ -51,8 +48,6 @@ app.post("/foods", async (req: Request, res: Response) => {
     const error = missingFields.join(", ") + " fields are required";
     return res.status(400).json({ error: error });
   }
-
-  console.log(req.body);
 
   const {
     food_name,
